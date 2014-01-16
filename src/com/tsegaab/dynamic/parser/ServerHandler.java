@@ -15,9 +15,14 @@ public class ServerHandler {
 	
 	private Xml2Article xml2Article;
 	private Xml2Source xml2Source;
-	private String host = "http://192.168.1.69";
+	private String host = "http://10.0.0.36";
 	
 	public ServerHandler() {
+		xml2Source = new Xml2Source();
+		xml2Article = new Xml2Article();
+	}
+	public ServerHandler(String ip) {
+		this.host = ip;
 		xml2Source = new Xml2Source();
 		xml2Article = new Xml2Article();
 	}
@@ -47,5 +52,8 @@ public class ServerHandler {
 		conn.connect();
 		InputStream stream = conn.getInputStream();
 		return stream;
+	}
+	public Article getArticlesWithId(int article_id) throws XmlPullParserException, IOException {
+		 return xml2Article.parse(downloadUrl(host + "/z_articles_handler/index.php/articles/withid/"+ String.valueOf(article_id)+ "?format=xml")).get(0);
 	}
 }

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,12 +34,14 @@ public class ArticlesActivity extends Activity {
 	private AsyncTask<Void, Void, Void> connectionTask;
 	private ArrayList<Article> articles = null;
 	private int source_id;
+	private Intent single_article_intent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.articles_layout);
 
+		single_article_intent = new Intent(this, SingleArticle.class);
 		articles_container = (ViewGroup) findViewById(R.id.articles_container);
 		Intent intent = getIntent();
 		source_id = intent.getIntExtra("source_id", 0);
@@ -106,6 +109,7 @@ public class ArticlesActivity extends Activity {
 		settings.setDefaultTextEncodingName("utf-8");
 		article_content.loadData(a.getContent(), "text/html; charset=utf-8",
 				"UTF-8");
+		
 		((TextView) articleView.findViewById(R.id.article_author)).setText(a
 				.getAuthor());
 
@@ -118,6 +122,9 @@ public class ArticlesActivity extends Activity {
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(), "View " + v.getId(),
 						Toast.LENGTH_SHORT).show();
+				single_article_intent.putExtra("article_id", v.getId());
+				v.setBackgroundColor(Color.DKGRAY);
+				startActivity(single_article_intent);
 
 			}
 		});
