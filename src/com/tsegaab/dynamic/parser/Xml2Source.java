@@ -1,6 +1,8 @@
 package com.tsegaab.dynamic.parser;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -14,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import com.tsegaab.dynamic.Consts;
 import com.tsegaab.dynamic.objects.Source;
 
+import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
@@ -88,7 +91,7 @@ public class Xml2Source {
 			}
 		}
 
-		return new Source(id, name, link, image_link, getImageByte(image_link));
+		return new Source(id, name, link, image_link, downloadPicture(getImageByte(image_link), image_link));
 	}
 
 	// Processes title tags in the feed.
@@ -148,6 +151,30 @@ public class Xml2Source {
 			Log.d("ImageManager", "Error: " + e.toString());
 		}
 		return null;
+	}
+	
+	public String downloadPicture(byte[] image_byte, String image_link) {
+		String path = null;
+		int splitSize =image_link.split("/").length;
+		File photo = new File(Environment.getExternalStorageDirectory(), image_link.split("/")[splitSize - 1]);
+		//photo.mkdirs();
+		if (photo.exists()) {
+			return photo.getPath();
+		}
+
+		try {
+			FileOutputStream fos = new FileOutputStream(photo.getPath());
+			if (image_byte != null) {
+				fos.write(image_byte);
+				path = photo.getPath();
+			}
+			fos.close();
+			Log.d(Consts.Z_TAG, "Image path = " + path);
+		} catch (java.io.IOException e) {
+			Log.e(Consts.EZ_TAG, "Exception in photoCallback", e);
+		}
+		return path;
+
 	}
 
 }

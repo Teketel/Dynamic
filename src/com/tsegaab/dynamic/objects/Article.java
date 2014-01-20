@@ -11,10 +11,13 @@ public class Article {
 	private String image_link;
 	private int source_id;
 	private byte[] image_byte;
+	private String full_content;
+	private String image_local_path; 
 	
-	
-	public Article(int id, String title, String content, String link,
-			String author, String created_date, String image_link, int source_id, byte[] image_byte) {
+
+	public Article(int id, String title, String content, String full_content,
+			String link, String author, String created_date, String image_link,
+			int source_id, byte[] image_byte) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
@@ -24,6 +27,23 @@ public class Article {
 		this.image_link = image_link;
 		this.source_id = source_id;
 		this.image_byte = image_byte;
+		this.full_content = full_content;
+
+	}
+
+	public Article(int id, String title, String content, String full_content,
+			String link, String author, String created_date, String image_link,
+			int source_id, String image_local_path) {
+		this.id = id;
+		this.title = title;
+		this.content = content;
+		this.link = link;
+		this.author = author;
+		this.created_date = created_date;
+		this.image_link = image_link;
+		this.source_id = source_id;
+		this.full_content = full_content;
+		this.setImage_local_path(image_local_path);
 
 	}
 
@@ -155,10 +175,36 @@ public class Article {
 	}
 
 	/**
-	 * @param image_byte the image_byte to set
+	 * @param image_byte
+	 *            the image_byte to set
 	 */
 	public void setImage_byte(byte[] image_byte) {
 		this.image_byte = image_byte;
 	}
 
+	public String getFull_content() {
+		return full_content;
+	}
+
+	public void setFull_content(String full_content) {
+		this.full_content = full_content;
+	}
+
+	public String getStyled_FullContent() {
+		String awapped = "<!-- BEGIN main container -->" + "<html><head>"
+				+ "<style type=\"text/css\" scoped>" + "div {    "
+				+ "background: ghostwhite;" + "font-family: monospace;"
+				+ "font-size: 17px;" + "padding: 2px 7px;" + "}"
+				+ "</style></head>" + "<body>" + this.getFull_content()
+				+ "</body>" + "</html>" + "<!-- END main container -->";
+		return awapped;
+	}
+
+	public String getImage_local_path() {
+		return image_local_path;
+	}
+
+	public void setImage_local_path(String image_local_path) {
+		this.image_local_path = image_local_path;
+	}
 }

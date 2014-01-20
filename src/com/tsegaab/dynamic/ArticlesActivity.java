@@ -1,13 +1,14 @@
 package com.tsegaab.dynamic;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import com.tsegaab.dynamic.objects.Article;
-import com.tsegaab.dynamic.parser.ServerHandler;
 
+import database.DbHandler;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,11 +31,13 @@ import android.widget.Toast;
 public class ArticlesActivity extends Activity {
 
 	private ViewGroup articles_container;
-	private ServerHandler sHandler;
 	private AsyncTask<Void, Void, Void> connectionTask;
 	private ArrayList<Article> articles = null;
 	private int source_id;
 	private Intent single_article_intent;
+	private View aContentView;
+	private View aLoadingView;
+	private int aShortAnimationDuration;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,25 +48,24 @@ public class ArticlesActivity extends Activity {
 		articles_container = (ViewGroup) findViewById(R.id.articles_container);
 		Intent intent = getIntent();
 		source_id = intent.getIntExtra("source_id", 0);
+		
+		aContentView = (View) findViewById(R.id.articles_scroll);
+		aLoadingView = (View) findViewById(R.id.articles_loading_spinner);
+		aContentView.setVisibility(View.GONE);
+		aShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+		
+		
 		connectionTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				sHandler = new ServerHandler();
-				try {
-					articles = sHandler.getAllArticlesWithSourceId(source_id);
-				} catch (XmlPullParserException e) {
-					Log.e(Consts.EZ_TAG, e.toString());
-					e.printStackTrace();
-				} catch (IOException e) {
-					Log.e(Consts.EZ_TAG, e.toString());
-					e.printStackTrace();
-				}
+				articles = Consts.db.getArticlesWithSourceId(source_id);
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Void result) {
+				showContentOrLoadingIndicator(true);
 				showArticles(articles);
 				connectionTask = null;
 			}
@@ -97,10 +99,13 @@ public class ArticlesActivity extends Activity {
 		
 		ImageView article_image = (ImageView) articleView
 				.findViewById(R.id.article_image);
-		if (a.getImage_byte() != null) {
-			Bitmap bmp = BitmapFactory.decodeByteArray(a.getImage_byte(), 0,
-					a.getImage_byte().length);
-			article_image.setImageBitmap(bmp);
+		if (a.getImage_local_path() != null) {
+			File imgFile = new  File(a.getImage_local_path());
+			if(imgFile.exists()){
+			    Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			    article_image.setImageBitmap(bmp);
+			}
+			
 		}
 
 		WebView article_content = ((WebView) articleView
@@ -132,4 +137,37 @@ public class ArticlesActivity extends Activity {
 		articles_container.addView(articleView, 0);
 
 	}
+	
+	private void showContentOrLoadingIndicator(boolean contentLoaded) {
+        // Decide which view to hide and which to show.
+        final View showView = contentLoaded ? aContentView : aLoadingView;
+        final View hideView = contentLoaded ? aLoadingView : aContentView;
+
+        // Set the "show" view to 0% opacity but visible, so that it is visible
+        // (but fully transparent) during the animation.
+        showView.setAlpha(0f);
+        showView.setVisibility(View.VISIBLE);
+
+        // Animate the "show" view to 100% opacity, and clear any animation listener set on
+        // the view. Remember that listeners are not limited to the specific animation
+        // describes in the chained method calls. Listeners are set on the
+        // ViewPropertyAnimator object for the view, which persists across several
+        // animations.
+        showView.animate()
+                .alpha(1f)
+                .setDuration(aShortAnimationDuration)
+                .setListener(null);
+
+        // Animate the "hide" view to 0% opacity. After the animation ends, set its visibility
+        // to GONE as an optimization step (it won't participate in layout passes, etc.)
+        hideView.animate()
+                .alpha(0f)
+                .setDuration(aShortAnimationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        hideView.setVisibility(View.GONE);
+                    }
+                });
+    }
 }

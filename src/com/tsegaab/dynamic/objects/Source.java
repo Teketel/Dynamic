@@ -7,8 +7,12 @@ public class Source {
 	private String link;
 	private String image_link;
 	private byte[] image_byte;
-
-	public Source(int id, String name, String link, String image_link, byte[] image_byte) {
+	private String image_local_path;
+	
+	
+	
+	public Source(int id, String name, String link, String image_link,
+			byte[] image_byte) {
 
 		this.id = id;
 		this.name = name;
@@ -17,6 +21,15 @@ public class Source {
 		this.image_byte = image_byte;
 	}
 
+	public Source(int id, String name, String link, String image_link, String image_local_path) {
+
+		this.id = id;
+		this.name = name;
+		this.link = link;
+		this.image_link = image_link;
+		this.setImage_local_path(image_local_path);
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -85,11 +98,18 @@ public class Source {
 	}
 
 	/**
-	 * @param image_byte the image_byte to set
+	 * @param image_byte
+	 *            the image_byte to set
 	 */
 	public void setImage_byte(byte[] image_byte) {
 		this.image_byte = image_byte;
 	}
-	
 
+	public String getImage_local_path() {
+		return image_local_path;
+	}
+
+	public void setImage_local_path(String image_local_path) {
+		this.image_local_path = image_local_path;
+	}
 }

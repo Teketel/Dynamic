@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:id="@+id/sources_scroll" >
 
         <GridLayout
             android:id="@+id/source_container"
@@ -20,5 +21,11 @@
             android:animateLayoutChanges="true" >
         </GridLayout>
     </ScrollView>
+    
+    <ProgressBar android:id="@+id/sources_loading_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
 
 </FrameLayout>

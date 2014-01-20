@@ -1,6 +1,8 @@
 package com.tsegaab.dynamic.parser;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -14,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import com.tsegaab.dynamic.Consts;
 import com.tsegaab.dynamic.objects.Article;
 
+import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
@@ -70,6 +73,7 @@ public class Xml2Article {
 		int id = 0;
 		String title = null;
 		String content = null;
+		String full_content = null;
 		String link = null;
 		String author = null;
 		String created_date = null;
@@ -89,6 +93,9 @@ public class Xml2Article {
             } else if (tag_name.equals("content")) {
                 Log.d(Consts.Z_TAG, "inside item content found");
                 content = readTagValue(parser, "content");
+            } else if (tag_name.equals("full_content")) {
+                Log.d(Consts.Z_TAG, "inside item full_content found");
+                full_content = readTagValue(parser, "full_content");
             } else if (tag_name.equals("author")) {
                 Log.d(Consts.Z_TAG, "inside item author found");
                 author = readTagValue(parser, "author");
@@ -106,7 +113,7 @@ public class Xml2Article {
 				skip(parser);
 			}
 		}
-		return new Article(id, title, content, link, author, created_date, image_link, source_id, getImageByte(image_link));
+		return new Article(id, title, content, full_content, link, author, created_date, image_link, source_id, downloadPicture(getImageByte(image_link), image_link));
 	}
 
 	// Processes title tags in the feed.
@@ -167,6 +174,30 @@ public class Xml2Article {
 			Log.d("ImageManager", "Error: " + e.toString());
 		}
 		return null;
+	}
+	
+	public String downloadPicture(byte[] image_byte, String image_link) {
+		String path = null;
+		int splitSize =image_link.split("/").length;
+		File photo = new File(Environment.getExternalStorageDirectory(), image_link.split("/")[splitSize - 1]);
+		//photo.mkdirs();
+		if (photo.exists()) {
+			return photo.getPath();
+		}
+
+		try {
+			FileOutputStream fos = new FileOutputStream(photo.getPath());
+			if (image_byte != null) {
+				fos.write(image_byte);
+				path = photo.getPath();
+			}
+			fos.close();
+			Log.d(Consts.Z_TAG, "Image path = " + path);
+		} catch (java.io.IOException e) {
+			Log.e(Consts.EZ_TAG, "Exception in photoCallback", e);
+		}
+		return path;
+
 	}
 
 }

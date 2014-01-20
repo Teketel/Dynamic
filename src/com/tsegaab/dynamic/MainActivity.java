@@ -1,20 +1,17 @@
 package com.tsegaab.dynamic;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 
-import org.xmlpull.v1.XmlPullParserException;
-import com.tsegaab.dynamic.objects.Source;
-import com.tsegaab.dynamic.parser.ServerHandler;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,13 +22,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tsegaab.dynamic.objects.Source;
+
+import database.DbHandler;
+
 public class MainActivity extends Activity {
 
-	private ServerHandler sHandler;
+	private Sync dataSyncer;
+	private DbHandler dbHandler;
 	private AsyncTask<Void, Void, Void> connectionTask;
 	private ArrayList<Source> sources = null;
 	private ViewGroup source_container;
 	private Intent articles_activity;
+	private View mContentView;
+	private View mLoadingView;
+	private int mShortAnimationDuration;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +50,26 @@ public class MainActivity extends Activity {
 		 */
 		source_container = (ViewGroup) findViewById(R.id.source_container);
 		articles_activity = new Intent(this, ArticlesActivity.class);
-
+		mContentView = (View) findViewById(R.id.sources_scroll);
+		mLoadingView = (View) findViewById(R.id.sources_loading_spinner);
+		mContentView.setVisibility(View.GONE);
+		mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+		
+		dataSyncer = new Sync();
+		dbHandler = new DbHandler(getApplicationContext());
+		Consts.db = dbHandler;
+		dataSyncer.execute(dbHandler);
 		connectionTask = new AsyncTask<Void, Void, Void>() {
-
 			@Override
 			protected Void doInBackground(Void... params) {
-				sHandler = new ServerHandler();
-				try {
-					sources = sHandler.getAllSources();
-				} catch (XmlPullParserException e) {
-					Log.e(Consts.EZ_TAG, e.toString());
-					e.printStackTrace();
-				} catch (IOException e) {
-					Log.e(Consts.EZ_TAG, e.toString());
-					e.printStackTrace();
-				}
+				
+				sources = dbHandler.getAllSources();
 				return null;
 			}
 
 			@Override
 			protected void onPostExecute(Void result) {
+				showContentOrLoadingIndicator(true);
 				showSources(sources);
 				connectionTask = null;
 			}
@@ -105,9 +110,15 @@ public class MainActivity extends Activity {
 		source_title.setText(s.getName());
 		ImageView source_image = (ImageView) sourceView
 				.findViewById(R.id.source_image);
-		Bitmap bmp = BitmapFactory.decodeByteArray(s.getImage_byte(), 0,
-				s.getImage_byte().length);
-		source_image.setImageBitmap(bmp);
+		if (s.getImage_local_path() != null) {
+			File imgFile = new  File(s.getImage_local_path());
+			if(imgFile.exists()){
+			    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			    source_image.setImageBitmap(myBitmap);
+			}
+			//Bitmap bmp = BitmapFactory.decodeByteArray(s.getImage_byte(), 0, s.getImage_byte().length);
+			
+		}
 		sourceView.setClickable(true);
 		sourceView.setId(s.getId());
 		sourceView.setOnClickListener(new OnClickListener() {
@@ -132,4 +143,37 @@ public class MainActivity extends Activity {
 		super.onResume();
 		// showSources(sources);
 	}
+	
+	private void showContentOrLoadingIndicator(boolean contentLoaded) {
+        // Decide which view to hide and which to show.
+        final View showView = contentLoaded ? mContentView : mLoadingView;
+        final View hideView = contentLoaded ? mLoadingView : mContentView;
+
+        // Set the "show" view to 0% opacity but visible, so that it is visible
+        // (but fully transparent) during the animation.
+        showView.setAlpha(0f);
+        showView.setVisibility(View.VISIBLE);
+
+        // Animate the "show" view to 100% opacity, and clear any animation listener set on
+        // the view. Remember that listeners are not limited to the specific animation
+        // describes in the chained method calls. Listeners are set on the
+        // ViewPropertyAnimator object for the view, which persists across several
+        // animations.
+        showView.animate()
+                .alpha(1f)
+                .setDuration(mShortAnimationDuration)
+                .setListener(null);
+
+        // Animate the "hide" view to 0% opacity. After the animation ends, set its visibility
+        // to GONE as an optimization step (it won't participate in layout passes, etc.)
+        hideView.animate()
+                .alpha(0f)
+                .setDuration(mShortAnimationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        hideView.setVisibility(View.GONE);
+                    }
+                });
+    }
 }
