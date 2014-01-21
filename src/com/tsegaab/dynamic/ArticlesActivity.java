@@ -5,8 +5,6 @@ import java.util.ArrayList;
 
 import com.tsegaab.dynamic.objects.Article;
 
-import database.DbHandler;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;

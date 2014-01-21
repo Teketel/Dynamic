@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 		dataSyncer = new Sync();
 		dbHandler = new DbHandler(getApplicationContext());
 		Consts.db = dbHandler;
-		dataSyncer.execute(dbHandler);
+		dataSyncer.execute(new DbHandler(getApplicationContext()));
 		connectionTask = new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
