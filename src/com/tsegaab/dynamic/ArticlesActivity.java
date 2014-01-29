@@ -36,13 +36,13 @@ public class ArticlesActivity extends Activity {
 	private View aContentView;
 	private View aLoadingView;
 	private int aShortAnimationDuration;
-
+	private int articles_counter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.articles_layout);
 
-		single_article_intent = new Intent(this, SingleArticle.class);
+		single_article_intent = new Intent(this, SingleArticleActivity.class);
 		articles_container = (ViewGroup) findViewById(R.id.articles_container);
 		Intent intent = getIntent();
 		source_id = intent.getIntExtra("source_id", 0);
@@ -51,7 +51,7 @@ public class ArticlesActivity extends Activity {
 		aLoadingView = (View) findViewById(R.id.articles_loading_spinner);
 		aContentView.setVisibility(View.GONE);
 		aShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-		
+		articles_counter = 0;
 		
 		connectionTask = new AsyncTask<Void, Void, Void>() {
 
@@ -64,6 +64,7 @@ public class ArticlesActivity extends Activity {
 			@Override
 			protected void onPostExecute(Void result) {
 				showContentOrLoadingIndicator(true);
+				Consts.current_articles = articles;
 				showArticles(articles);
 				connectionTask = null;
 			}
@@ -117,7 +118,8 @@ public class ArticlesActivity extends Activity {
 				.getAuthor());
 
 		articleView.setClickable(true);
-		articleView.setId(a.getId());
+		//articleView.setId(a.getId());
+		articleView.setId(articles_counter);
 
 		articleView.setOnClickListener(new OnClickListener() {
 
@@ -125,13 +127,14 @@ public class ArticlesActivity extends Activity {
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(), "View " + v.getId(),
 						Toast.LENGTH_SHORT).show();
-				single_article_intent.putExtra("article_id", v.getId());
+				single_article_intent.putExtra("article_index", v.getId());
 				v.setBackgroundColor(Color.DKGRAY);
 				startActivity(single_article_intent);
+				v.setBackgroundColor(Color.WHITE);
 
 			}
 		});
-
+		articles_counter++;
 		articles_container.addView(articleView, 0);
 
 	}

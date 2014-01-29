@@ -33,6 +33,10 @@
             android:name="com.tsegaab.dynamic.SingleArticle"
             android:label="Articles" >
         </activity>
+        <activity
+            android:name="com.tsegaab.dynamic.SingleArticleActivity"
+            android:label="Articles" >
+        </activity>
     </application>
 
 </manifest>

@@ -12,8 +12,7 @@ public class Article {
 	private int source_id;
 	private byte[] image_byte;
 	private String full_content;
-	private String image_local_path; 
-	
+	private String image_local_path;
 
 	public Article(int id, String title, String content, String full_content,
 			String link, String author, String created_date, String image_link,
@@ -191,12 +190,18 @@ public class Article {
 	}
 
 	public String getStyled_FullContent() {
-		String awapped = "<!-- BEGIN main container -->" + "<html><head>"
-				+ "<style type=\"text/css\" scoped>" + "div {    "
-				+ "background: ghostwhite;" + "font-family: monospace;"
-				+ "font-size: 17px;" + "padding: 2px 7px;" + "}"
-				+ "</style></head>" + "<body>" + this.getFull_content()
-				+ "</body>" + "</html>" + "<!-- END main container -->";
+		String awapped = "<!-- BEGIN main container -->" + "\n<html>\n<head>"
+				+ "\n<style type=\"text/css\" scoped>\n" + "" + "\nbody {\n "
+				+ "\n    font-family: Arial, Helvetica, sans-serif;\n"
+				+ "\n    font-size: 15px;\n" + "\n   font-weight: normal;\n"
+				+ "\n    font-variant: small-caps;\n"
+				+ "\n    line-height: 150%;\n" + "\n}\n" + "\ndiv {    \n"
+				+ "\nbackground: rgb(240, 246, 255);\n" + "\nfont-family: monospace;\n"
+				+ "\nfont-size: 18px;\n" + "\npadding: 5px 9px;\n"
+				+ "\nword-wrap: break-word;\n" + "\n}\n"
+				+ "\n</style>\n</head>\n" + "\n<body>\n"
+				+ this.getFull_content() + "\n</body>\n" + "\n</html>\n"
+				+ "<!-- END main container -->";
 		return awapped;
 	}
 

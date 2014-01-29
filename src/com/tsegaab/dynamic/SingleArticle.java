@@ -45,7 +45,7 @@ public class SingleArticle extends Activity {
 		article_id = intent.getIntExtra("article_id", 0);
 		
 		sContentView = (View) findViewById(R.id.single_article);
-		sLoadingView = (View) findViewById(R.id.single_loading_spinner);
+		
 		sContentView.setVisibility(View.GONE);
 		sShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 		
