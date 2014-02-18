@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Dynamic</string>
+    <string name="app_name">MyNavigatioDrawer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
+    <string-array name="nav_drawer_items">
+        <item >News</item>
+        <item >Sport</item>
+        <item >Business</item>
+        <item>Technology</item>
+    </string-array>
+    <string-array name="nav_drawer_items_icon">
+        <item>@drawable/nav_drawer_icn_news</item>
+        <item>@drawable/nav_drawer_icn_sport</item>
+        <item>@drawable/nav_drawer_icn_business</item>
+        <item>@drawable/nav_drawer_icn_technology</item>
+    </string-array>
+    
+    <color name="list_item_title">#DDD</color>
+    <color name="counter_text_color">#F0A</color>
+    <color name="list_background">#DFD</color>
+    <color name="list_background_pressed">#0FD</color>
+    <color name="counter_text_bg">#0F0</color>
+    <color name="list_divider">#AF0</color>
+    
 </resources>

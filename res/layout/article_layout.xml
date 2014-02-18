@@ -22,7 +22,6 @@
         android:id="@+id/article_image"
         android:layout_width="fill_parent"
         android:layout_height="180dp"
-        android:accessibilityLiveRegion="polite"
         android:contentDescription="Image"
         android:background="@android:color/background_dark" />
 
