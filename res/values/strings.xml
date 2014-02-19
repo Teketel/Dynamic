@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyNavigatioDrawer</string>
+    <string name="app_name">Dynamic</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
@@ -18,9 +18,9 @@
         <item>@drawable/nav_drawer_icn_technology</item>
     </string-array>
     
-    <color name="list_item_title">#DDD</color>
+    <color name="list_item_title">#FFF</color>
     <color name="counter_text_color">#F0A</color>
-    <color name="list_background">#DFD</color>
+    <color name="list_background">#000</color>
     <color name="list_background_pressed">#0FD</color>
     <color name="counter_text_bg">#0F0</color>
     <color name="list_divider">#AF0</color>

@@ -42,12 +42,12 @@ public class SourcesFragment extends Fragment{
         ArrayList<Source> sources = dbhandler.getAllSources();
         Source s;
         View sourcesView = inflater.inflate(R.layout.sources_layout, container, false);
-        LinearLayout sources_container = (LinearLayout) sourcesView.findViewById(R.id.new_linear);
+        ViewGroup sources_container = (ViewGroup) sourcesView.findViewById(R.id.sources_container_no_2);
         
         for (int i = 0; i < sources.size(); i++) {
         	s = sources.get(i);
 			View sourceView = inflater.inflate(R.layout.source_layout,
-					container, false);
+					sources_container, false);
 			TextView source_title = ((TextView) sourceView
 					.findViewById(R.id.source_title));
 			source_title.setText(s.getName());

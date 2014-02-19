@@ -1,6 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_bright"
+    android:padding="7dp" >
 
     <!--
          A vertical LinearLayout in a ScrollView. This emulates a ListView (and is lighter weight
@@ -12,20 +14,22 @@
         android:layout_height="match_parent"
         android:id="@+id/sources_scroll_2" >
 
-<!--         <GridLayout -->
-<!--             android:id="@+id/sources_container_no_2" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:orientation="horizontal" -->
-<!--             android:columnCount="2" -->
-<!--             android:animateLayoutChanges="true" > -->
-            <LinearLayout android:layout_width="wrap_content"
+        <GridLayout
+            android:id="@+id/sources_container_no_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="2"
+            android:animateLayoutChanges="true"
+            android:padding="5dp" >
+        </GridLayout>
+
+<!-- 			<LinearLayout android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/new_linear"
                 android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:background="@android:color/darker_gray"></LinearLayout>
-<!--         </GridLayout> -->
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/darker_gray"/> -->
     </ScrollView>
 
 </FrameLayout>

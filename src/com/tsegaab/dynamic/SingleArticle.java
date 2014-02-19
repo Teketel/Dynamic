@@ -8,6 +8,7 @@ import com.tsegaab.dynamic.objects.Article;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -44,6 +45,11 @@ public class SingleArticle extends Activity {
 		Intent intent = getIntent();
 		article_id = intent.getIntExtra("article_id", 0);
 		
+		
+		ActionBar actionBar = getActionBar();
+	    actionBar.setHomeButtonEnabled(true);
+	    
+	    
 		sContentView = (View) findViewById(R.id.single_article);
 		
 		sContentView.setVisibility(View.GONE);

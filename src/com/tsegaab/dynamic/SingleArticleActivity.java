@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.tsegaab.dynamic.objects.Article;
 
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.MenuItem;
 
 
 public class SingleArticleActivity extends FragmentActivity {
@@ -22,6 +24,8 @@ public class SingleArticleActivity extends FragmentActivity {
 	private PagerAdapter mPagerAdapter;
 	private ArrayList<Article> articles_to_display;
 	private int article_index;
+	private int source_id;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,12 @@ public class SingleArticleActivity extends FragmentActivity {
 
 		Intent i = getIntent();
 		article_index = i.getIntExtra("article_index", 0);
-
+		source_id = i.getIntExtra("source_id", 0);
+		
+		
+		ActionBar actionBar = getActionBar();
+	    actionBar.setHomeButtonEnabled(true);
+	    
 		articles_to_display = Consts.current_articles;
 		NUM_PAGES = articles_to_display.size();
 
@@ -71,6 +80,21 @@ public class SingleArticleActivity extends FragmentActivity {
 		@Override
 		public int getCount() {
 			return NUM_PAGES;
+		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			Intent intent = new Intent(this, ArticlesActivity.class);
+			intent.putExtra("source_id", source_id);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
