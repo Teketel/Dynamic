@@ -45,7 +45,7 @@
             android:padding="2dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:includeFontPadding="true" />
     </RelativeLayout>
 

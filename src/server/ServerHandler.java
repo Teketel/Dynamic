@@ -17,7 +17,7 @@ public class ServerHandler {
 
 	private Xml2Article xml2Article;
 	private Xml2Source xml2Source;
-	private String host = "http://10.0.0.40";
+	private String host = "http://10.0.0.49";
 
 	public ServerHandler() {
 		xml2Source = new Xml2Source();

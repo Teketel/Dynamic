@@ -2,22 +2,26 @@ package com.tsegaab.dynamic;
 
 import java.util.ArrayList;
 
-import com.tsegaab.dynamic.objects.Article;
-
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ShareActionProvider;
+import android.widget.Toast;
 
+import com.tsegaab.dynamic.objects.Article;
 
 public class SingleArticleActivity extends FragmentActivity {
+	
+	private ShareActionProvider provider;
 
 	private static int NUM_PAGES;
 	private ViewPager mPager;
@@ -25,7 +29,6 @@ public class SingleArticleActivity extends FragmentActivity {
 	private ArrayList<Article> articles_to_display;
 	private int article_index;
 	private int source_id;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,11 @@ public class SingleArticleActivity extends FragmentActivity {
 		Intent i = getIntent();
 		article_index = i.getIntExtra("article_index", 0);
 		source_id = i.getIntExtra("source_id", 0);
-		
-		
+
 		ActionBar actionBar = getActionBar();
-	    actionBar.setHomeButtonEnabled(true);
-	    
+		actionBar.setHomeButtonEnabled(true);
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
 		articles_to_display = Consts.current_articles;
 		NUM_PAGES = articles_to_display.size();
 
@@ -74,7 +77,7 @@ public class SingleArticleActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			return ScreenSlidePageFragment
 					.create(articles_to_display, position);
-			
+
 		}
 
 		@Override
@@ -82,7 +85,7 @@ public class SingleArticleActivity extends FragmentActivity {
 			return NUM_PAGES;
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -93,8 +96,39 @@ public class SingleArticleActivity extends FragmentActivity {
 			startActivity(intent);
 			finish();
 			return true;
+
+			// action with ID action_refresh was selected
+		case R.id.sigle_article_action_share:
+			//sdoShare();
+			Toast.makeText(this, "Share selected", Toast.LENGTH_SHORT).show();
+			return true;
+			// action with ID action_settings was selected
+		case R.id.sigle_article_action_favorite:
+			Toast.makeText(this, "Favorite selected", Toast.LENGTH_SHORT)
+					.show();
+
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.single_activity_actions, menu);
+		// Get the ActionProvider for later usage
+	    // provider = (ShareActionProvider) menu.findItem(R.id.sigle_article_action_share).getActionProvider();
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	
+	
+	public void doShare() {
+	    // populate the share intent with data
+	    Intent intent = new Intent(Intent.ACTION_SEND);
+	    intent.setType("text/plain");
+	    intent.putExtra(Intent.EXTRA_TEXT, "This is a message for you");
+	    provider.setShareIntent(intent);
+	  }
 }

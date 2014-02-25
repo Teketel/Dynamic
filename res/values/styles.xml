@@ -15,6 +15,17 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Dynamic</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_dynamic</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_dynamic</item>
     </style>
 
+    
+    <style name="ActionBar.Solid.Dynamic" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_background_textured_dynamic</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_dynamic</item>
+        <item name="android:backgroundSplit">@drawable/ab_background_textured_dynamic</item>
+    </style>
+    
 </resources>

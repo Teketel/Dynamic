@@ -5,8 +5,8 @@
     android:layout_margin="8dp"
     android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:paddingBottom="2dp"
-    android:paddingTop="2dp" >
+    android:padding="5dp"
+    android:paddingTop="0dp" >
 
     <TextView
         android:id="@+id/article_title"
@@ -16,19 +16,19 @@
         android:paddingTop="2dp"
         android:textSize="28sp"
         android:textStyle="bold"
-         android:includeFontPadding="true" />
+       	android:includeFontPadding="true" />
 
     <ImageView
         android:id="@+id/article_image"
         android:layout_width="fill_parent"
         android:layout_height="180dp"
         android:contentDescription="Image"
-        android:background="@android:color/background_dark" />
+        android:background="@android:color/darker_gray" />
 
     <WebView
         android:id="@+id/article_highlite"
         android:layout_width="wrap_content"
-        android:layout_height="80dp" />
+        android:layout_height="100dp" />
 
     <TextView
         android:id="@+id/article_author"

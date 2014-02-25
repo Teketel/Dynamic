@@ -1,9 +1,13 @@
-package com.tsegaab.dynamic;
+package junck;
 
 import java.io.File;
 
 import server.ServerHandler;
 
+import com.tsegaab.dynamic.Consts;
+import com.tsegaab.dynamic.R;
+import com.tsegaab.dynamic.R.id;
+import com.tsegaab.dynamic.R.layout;
 import com.tsegaab.dynamic.objects.Article;
 
 import android.animation.Animator;

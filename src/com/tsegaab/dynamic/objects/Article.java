@@ -203,6 +203,20 @@ public class Article {
 				+ "<!-- END main container -->";
 		return awapped;
 	}
+	
+	public String getStyled_Content() {
+		String awapped = "<!-- BEGIN main container -->" + "\n<html>\n<head>"
+				+ "\n<style type=\"text/css\" scoped>\n" + "" + "\nbody {\n "
+				+ "\n    font-family: Arial, Helvetica, sans-serif;\n"
+				+ "\n    font-size: 15px;\n" + "\n   font-weight: normal;\n"
+				+ "\n    line-height: 150%;\n" + "\n}\n" + "\ndiv {    \n"
+				+ "\npadding: 7px 12px;\n"
+				+ "\nword-wrap: break-word;\n" + "\n}\n"
+				+ "\n</style>\n</head>\n" + "\n<body>\n"
+				+ this.getFull_content() + "\n</body>\n" + "\n</html>\n"
+				+ "<!-- END main container -->";
+		return awapped;
+	}
 
 	public String getImage_local_path() {
 		return image_local_path;

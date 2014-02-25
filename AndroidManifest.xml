@@ -30,7 +30,7 @@
             android:label="Articles" >
         </activity>
         <activity
-            android:name="com.tsegaab.dynamic.SingleArticle"
+            android:name="junck.SingleArticle"
             android:label="Articles" >
         </activity>
         <activity

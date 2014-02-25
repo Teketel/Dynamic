@@ -100,7 +100,7 @@ public class FristActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
  
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.icn_drawer, //nav menu toggle icon
+                R.drawable.ic_drawer, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
         ) {

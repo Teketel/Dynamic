@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,9 +50,9 @@ public class ScreenSlidePageFragment extends Fragment {
 				R.layout.single_article, container, false);
 		TextView article_title = ((TextView) articleView
 				.findViewById(R.id.sigle_article_title));
-//		Typeface article_title_font = Typeface.createFromAsset(getAssets(),
-//				"fonts/NYALA.TTF");
-//		article_title.setTypeface(article_title_font);
+		Typeface article_title_font = Typeface.createFromAsset(getActivity().getAssets(),
+				"fonts/DroidSerif-Bold.ttf");
+		article_title.setTypeface(article_title_font);
 		article_title.setText(this.article.getTitle());
 
 		ImageView article_image = (ImageView) articleView

@@ -5,6 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
+    <string name="action_share">Share</string>
+    <string name="action_favorite">Favorite</string>
+    
     <string-array name="nav_drawer_items">
         <item >News</item>
         <item >Sport</item>
@@ -18,11 +21,11 @@
         <item>@drawable/nav_drawer_icn_technology</item>
     </string-array>
     
-    <color name="list_item_title">#FFF</color>
-    <color name="counter_text_color">#F0A</color>
-    <color name="list_background">#000</color>
-    <color name="list_background_pressed">#0FD</color>
-    <color name="counter_text_bg">#0F0</color>
-    <color name="list_divider">#AF0</color>
+    <color name="list_item_title">#000000</color>
+    <color name="counter_text_color">#05CDF5</color>
+    <color name="list_background">#EDEDED</color>
+    <color name="list_background_pressed">#A0EBFA</color>
+    <color name="counter_text_bg">#BAE0E8</color>
+    <color name="list_divider">#F2F2F2</color>
     
 </resources>

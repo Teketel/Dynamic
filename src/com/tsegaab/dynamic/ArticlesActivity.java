@@ -119,7 +119,7 @@ public class ArticlesActivity extends Activity {
 				.findViewById(R.id.article_highlite));
 		WebSettings settings = article_content.getSettings();
 		settings.setDefaultTextEncodingName("utf-8");
-		article_content.loadData(a.getContent(), "text/html; charset=utf-8",
+		article_content.loadData(a.getStyled_Content(), "text/html; charset=utf-8",
 				"UTF-8");
 
 		((TextView) articleView.findViewById(R.id.article_author)).setText(a
