@@ -68,6 +68,7 @@ public class Xml2Source {
 		String name = null;
 		String link = null;
 		String image_link = null;
+		String category_id = null;
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.getEventType() != XmlPullParser.START_TAG) {
 				continue;
@@ -85,13 +86,17 @@ public class Xml2Source {
 			} else if (tag_name.equals("image_link")) {
 				Log.d(Consts.Z_TAG, "inside item image_link found");
 				image_link = readTagValue(parser, "image_link");
+			} else if (tag_name.equals("category_id")) {
+				Log.d(Consts.Z_TAG, "inside item category_id found");
+				category_id = readTagValue(parser, "category_id");
 			} else {
 				Log.d(Consts.Z_TAG, "inside item skiping");
 				skip(parser);
 			}
 		}
 
-		return new Source(id, name, link, image_link, downloadPicture(getImageByte(image_link), image_link));
+		return new Source(id, name, link, image_link, downloadPicture(
+				getImageByte(image_link), image_link), category_id);
 	}
 
 	// Processes title tags in the feed.
@@ -152,12 +157,18 @@ public class Xml2Source {
 		}
 		return null;
 	}
-	
+
 	public String downloadPicture(byte[] image_byte, String image_link) {
 		String path = null;
-		int splitSize =image_link.split("/").length;
-		File photo = new File(Environment.getExternalStorageDirectory(), image_link.split("/")[splitSize - 1]);
-		//photo.mkdirs();
+		int splitSize = image_link.split("/").length;
+		File imageDir = new File(Environment.getExternalStorageDirectory() + "/.com/tsegaab/dynamic/images/sources/");
+		if (!imageDir.exists()) {
+			imageDir.mkdirs();
+			//Log.d(Consts.EZ_TAG, "Xmlparser Unable to create " + imageDir.getAbsolutePath().toString());
+		}
+		File photo = new File(imageDir.getAbsolutePath(),
+				image_link.split("/")[splitSize - 1]);
+		// photo.mkdirs();
 		if (photo.exists()) {
 			return photo.getPath();
 		}

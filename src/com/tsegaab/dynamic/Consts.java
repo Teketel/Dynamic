@@ -16,5 +16,6 @@ public class Consts {
 	public static DbHandler db = null;
 	public static ArrayList<Article> current_articles = null;
 	public static Context context = null;
+	public static boolean categsAndSourcesSynced = false;
 	
 }

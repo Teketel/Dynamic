@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
-    android:padding="7dp" >
+    android:background="#B9D2DE"
+    android:padding="5dp" >
 
     <!--
          A vertical LinearLayout in a ScrollView. This emulates a ListView (and is lighter weight
@@ -22,7 +22,7 @@
             android:columnCount="2"
             android:animateLayoutChanges="true"
             android:gravity="center"
-            android:padding="5dp" >
+            android:padding="2dp" >
         </GridLayout>
     </ScrollView>
 

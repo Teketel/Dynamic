@@ -6,8 +6,10 @@
     <!-- Framelayout to display Fragments -->
 	<ProgressBar
             android:id="@+id/activity_frist_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="?android:progressBarStyleLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center" />
     <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
@@ -16,15 +18,15 @@
 
     <!-- Listview to display slider menu -->
 
-    <ListView
-        android:id="@+id/list_slidermenu"
+    <ExpandableListView
+        android:id="@+id/list_slider_menu"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/list_background"
         android:choiceMode="singleChoice"
         android:divider="@color/list_divider"
-        android:dividerHeight="1dp"
+        android:dividerHeight="1.3dp"
         android:listSelector="@drawable/list_selector" />
 
 </android.support.v4.widget.DrawerLayout>

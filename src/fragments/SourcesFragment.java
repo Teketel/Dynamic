@@ -1,8 +1,13 @@
-package com.tsegaab.dynamic;
+package fragments;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import com.tsegaab.dynamic.ArticlesActivity;
+import com.tsegaab.dynamic.Consts;
+import com.tsegaab.dynamic.R;
+import com.tsegaab.dynamic.R.id;
+import com.tsegaab.dynamic.R.layout;
 import com.tsegaab.dynamic.objects.Source;
 
 import database.DbHandler;

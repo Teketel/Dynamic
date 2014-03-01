@@ -6,7 +6,17 @@
     <string name="hello_world">Hello world!</string>
 
     <string name="action_share">Share</string>
-    <string name="action_favorite">Favorite</string>
+    <string name="action_font_plus">Fount Plus</string>
+    <string name="action_font_minus">Font Minus</string>
+    <string name="action_bright_plus">Brightness Plus</string>
+    <string name="action_bright_minus">Brightness Minus</string>
+    <string name="action_mode">Reading Mode</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_search">Search</string>
+    
+    <string name="loading_string">Loading . . .</string>
+    
+    
     
     <string-array name="nav_drawer_items">
         <item >News</item>
@@ -15,17 +25,34 @@
         <item>Technology</item>
     </string-array>
     <string-array name="nav_drawer_items_icon">
-        <item>@drawable/nav_drawer_icn_news</item>
-        <item>@drawable/nav_drawer_icn_sport</item>
-        <item>@drawable/nav_drawer_icn_business</item>
-        <item>@drawable/nav_drawer_icn_technology</item>
+        <item>@drawable/news</item>
+        <item>@drawable/sports</item>
+        <item>@drawable/busi</item>
+        <item>@drawable/tech</item>
+    </string-array>
+    
+    <string-array name="nav_drawer_child_items">
+        <item >Reporter</item>
+        <item >Walta</item>
+        <item >Government</item>
+        <item>Edna_mall</item>
+    </string-array>
+    <string-array name="nav_drawer_child_items_icon">
+        <item>@drawable/reporter</item>
+        <item>@drawable/walta</item>
+        <item>@drawable/gov</item>
+        <item>@drawable/edna</item>
     </string-array>
     
     <color name="list_item_title">#000000</color>
+    <color name="child_list_item_title">#0f0f0f</color>
     <color name="counter_text_color">#05CDF5</color>
-    <color name="list_background">#EDEDED</color>
-    <color name="list_background_pressed">#A0EBFA</color>
+    <color name="list_background">#F2F8FF</color>
+    <color name="child_list_background">#F2F8FF</color>
+    <color name="list_background_pressed">#74ACF6</color>
+    <color name="child_list_background_pressed">#5BA8F5</color>
     <color name="counter_text_bg">#BAE0E8</color>
-    <color name="list_divider">#F2F2F2</color>
+    <color name="list_divider">#EDEDED</color>
+    <color name="app_color">#9ABEE1</color>
     
 </resources>

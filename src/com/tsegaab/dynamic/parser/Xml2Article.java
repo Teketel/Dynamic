@@ -179,7 +179,12 @@ public class Xml2Article {
 	public String downloadPicture(byte[] image_byte, String image_link) {
 		String path = null;
 		int splitSize =image_link.split("/").length;
-		File photo = new File(Environment.getExternalStorageDirectory(), image_link.split("/")[splitSize - 1]);
+		File imageDir = new File(Environment.getExternalStorageDirectory() + "/.com/tsegaab/dynamic/images/articles/");
+		if(!imageDir.exists()){
+			imageDir.mkdirs();
+			//Log.d(Consts.EZ_TAG, "Xmlparser Unable to create " + imageDir.getAbsolutePath().toString());
+		}
+		File photo = new File(imageDir.getAbsolutePath(), image_link.split("/")[splitSize - 1]);
 		//photo.mkdirs();
 		if (photo.exists()) {
 			return photo.getPath();

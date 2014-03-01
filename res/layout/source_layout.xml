@@ -5,9 +5,8 @@
     android:orientation="vertical"
     android:id="@+id/source"
     android:background="@android:color/background_light"
-    android:padding="5dp"
-    android:layout_gravity="center"
-    android:layout_margin="6dp" >
+    android:layout_margin="5dp"
+    android:layout_gravity="center">
     
 <ImageView 
     android:layout_width="145dp"
@@ -21,5 +20,6 @@
     android:textColor="@android:color/black"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingLeft="4dp"
     android:layout_gravity="bottom"/>
 </LinearLayout>

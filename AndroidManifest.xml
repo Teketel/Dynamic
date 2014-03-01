@@ -35,8 +35,10 @@
         </activity>
         <activity
             android:name="com.tsegaab.dynamic.SingleArticleActivity"
-            android:label="Articles" >
+            android:label="Articles"
+            android:uiOptions="splitActionBarWhenNarrow" >
         </activity>
+        <service android:name="com.tsegaab.dynamic.bgs.Syncer"></service>
     </application>
 
 </manifest>

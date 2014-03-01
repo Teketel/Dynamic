@@ -1,5 +1,18 @@
 package com.tsegaab.dynamic.objects;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import com.tsegaab.dynamic.Consts;
+
+import database.DbHandler;
+
+import android.util.Base64;
+import android.util.Log;
+
 public class Article {
 
 	private int id;
@@ -190,16 +203,42 @@ public class Article {
 	}
 
 	public String getStyled_FullContent() {
-		String awapped = "<!-- BEGIN main container -->" + "\n<html>\n<head>"
-				+ "\n<style type=\"text/css\" scoped>\n" + "" + "\nbody {\n "
-				+ "\n    font-family: Arial, Helvetica, sans-serif;\n"
-				+ "\n    font-size: 20px;\n" + "\n   font-weight: normal;\n"
-				+ "\n    line-height: 150%;\n" + "\n}\n" + "\ndiv {    \n"
-				+ "\nbackground: rgb(240, 246, 255);\n"
-				+ "\npadding: 7px 12px;\n"
-				+ "\nword-wrap: break-word;\n" + "\n}\n"
-				+ "\n</style>\n</head>\n" + "\n<body>\n"
-				+ this.getFull_content() + "\n</body>\n" + "\n</html>\n"
+		String awapped = "<!-- BEGIN main container -->" + "\n" +
+				"<html>\n" +
+				"<head>"
+				+ "\n<style type=\"text/css\" scoped>" 
+				+ "\nbody { "
+				+ "\n   font-family: Arial, Helvetica, sans-serif;"
+				+ "\n   font-size: 20px;" 
+				+ "\n   font-weight: normal;"
+				+ "\n   line-height: 150%;" 
+				+ "\n}\n" 
+				
+				+ "div {"
+				+ "\n	background: rgb(240, 246, 255);"
+				+ "\n   padding: 3px 6px;"
+				+ "\n   word-wrap: break-word;\n" 
+				+ "}\n"
+				+ "\n</style>\n" 
+				+ "</head>\n" 
+				+ "\n<body>\n"
+				+ this.getFull_content() 
+				+ "\n</body>\n" 
+				+ "\n</html>\n"
+				+ "<!-- END main container -->";
+		return awapped;
+	}
+	public String getStyled_FullContentWithTitleAndImage() {
+		String awapped = Consts.db.getStyle() + "\n<body>\n"
+				+ "<h3 style\"font-size: 30px;\n\">"
+				+ this.getTitle()
+				+ "</h3>"
+				+ "\n<img src=\""
+				+ "data:image/jpeg;base64," + Base64.encodeToString(this.getByteArrayFromImage(this.getImage_local_path()), Base64.DEFAULT)  
+				+ "\">"
+				+ this.getFull_content() 
+				+ "\n</body>\n" 
+				+ "\n</html>\n"
 				+ "<!-- END main container -->";
 		return awapped;
 	}
@@ -210,10 +249,13 @@ public class Article {
 				+ "\n    font-family: Arial, Helvetica, sans-serif;\n"
 				+ "\n    font-size: 15px;\n" + "\n   font-weight: normal;\n"
 				+ "\n    line-height: 150%;\n" + "\n}\n" + "\ndiv {    \n"
-				+ "\npadding: 7px 12px;\n"
+				+ "\npadding: 3px;\n"
 				+ "\nword-wrap: break-word;\n" + "\n}\n"
-				+ "\n</style>\n</head>\n" + "\n<body>\n"
-				+ this.getFull_content() + "\n</body>\n" + "\n</html>\n"
+				+ "\n</style>\n</head>\n" 
+				+ "\n<body>\n"
+				+ this.getFull_content() 
+				+ "\n</body>\n" 
+				+ "\n</html>\n"
 				+ "<!-- END main container -->";
 		return awapped;
 	}
@@ -225,4 +267,37 @@ public class Article {
 	public void setImage_local_path(String image_local_path) {
 		this.image_local_path = image_local_path;
 	}
+	
+	private byte[] getByteArrayFromImage(String filePath)  {
+	     
+        File file = new File(filePath);
+        System.out.println(file.exists() + "!!");
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        FileInputStream fis;
+		try {
+			fis = new FileInputStream(file);
+		
+        //create FileInputStream which obtains input bytes from a file in a file system
+        //FileInputStream is meant for reading streams of raw bytes such as image data. For reading streams of characters, consider using FileReader.
+ 
+        //InputStream in = resource.openStream();
+        
+        byte[] buf = new byte[1024];
+        
+            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum); 
+                //no doubt here is 0
+                /*Writes len bytes from the specified byte array starting at offset 
+                off to this byte array output stream.*/
+                System.out.println("read " + readNum + " bytes,");
+            }
+        } catch (FileNotFoundException ex) {
+            Log.d("error","error");
+        }catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        byte[] bytes = bos.toByteArray();
+        return bytes;
+}
 }
