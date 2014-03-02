@@ -114,8 +114,8 @@ public class ServerHandler {
 	private InputStream downloadUrl(String urlString) throws IOException {
 		URL url = new URL(urlString);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setReadTimeout(10000 /* milliseconds */);
-		conn.setConnectTimeout(15000 /* milliseconds */);
+		conn.setReadTimeout(7000 /* milliseconds */);
+		conn.setConnectTimeout(5000 /* milliseconds */);
 		conn.setRequestMethod("GET");
 		conn.setDoInput(true);
 		// Starts the query

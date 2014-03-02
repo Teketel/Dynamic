@@ -393,4 +393,22 @@ public class DbHandler extends SQLiteOpenHelper {
 		Log.d(Consts.Z_TAG, bg);
 		return bg;
 	}
+
+	public ArrayList<Article> getArticlesSummaryIndexInCategoryId(int s_id,
+			int c_id) {
+		String query = "SELECT * FROM " + sourceTbName + " WHERE category_id = " + c_id;
+		int source_id = 0;
+		SQLiteDatabase db = this.getWritableDatabase();
+		Log.d(Consts.Z_TAG, " getArticlesSummaryIndexInCategoryId Excuting .. " + query);
+		Log.d(Consts.Z_TAG, ""+s_id);
+		Cursor getSourcesCursor = db.rawQuery(query, null);
+		if (getSourcesCursor.moveToFirst()) {
+			do {
+				source_id = Integer.parseInt(getSourcesCursor.getString(0));
+				s_id--;
+			} while ((getSourcesCursor.moveToNext()) && (s_id > -1));
+		}
+		
+		return this.getArticlesWithSourceId(source_id);
+	}
 }

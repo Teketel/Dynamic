@@ -13,6 +13,7 @@ import com.tsegaab.dynamic.objects.Source;
 
 import database.DbHandler;
 import fragments.Articles2Category;
+import fragments.Articles2Source;
 import fragments.LoadingFragment;
 import fragments.SourcesFragment;
 
@@ -50,9 +51,7 @@ public class FristActivity extends Activity {
 	// private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private Sync dataSyncer;
-	private View mContentView;
-	private View mLoadingView;
-
+	
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -94,11 +93,8 @@ public class FristActivity extends Activity {
 		db = new DbHandler(getApplicationContext());
 		Consts.db = db;
 
-		mContentView = (View) findViewById(R.id.frame_container);
-		mLoadingView = (View) findViewById(R.id.activity_frist_progress);
 		mShortAnimationDuration = getResources().getInteger(
 				android.R.integer.config_shortAnimTime);
-		showContentOrLoadingIndicator(false);
 
 		startService(new Intent(this, Syncer.class));
 
@@ -159,10 +155,31 @@ public class FristActivity extends Activity {
 								.getPackedPositionForChild(groupPosition,
 										childPosition));
 				expandableListView.setItemChecked(childIndex, true);
+				displayArticlesOfCategoryAndSourceId(groupPosition, childPosition);
 				Toast.makeText(getApplicationContext(), "" + childIndex,
 						Toast.LENGTH_SHORT).show();
 				// Switch to frame
 				return true;
+			}
+
+			private void displayArticlesOfCategoryAndSourceId(
+					int groupPosition, int childPosition) {
+				Fragment fragment = null;
+				fragment = new Articles2Source();
+				Bundle bundleArg = new Bundle();
+				bundleArg.putInt("category_id", groupPosition);
+				bundleArg.putInt("source_id", childPosition);
+				fragment.setArguments(bundleArg);
+				FragmentManager fragmentManager = getFragmentManager();
+				fragmentManager.beginTransaction()
+						.replace(R.id.frame_container, fragment).commit();
+
+				// update selected item and title, then close the drawer
+				expandableListView.setItemChecked(groupPosition, true);
+				expandableListView.setSelection(groupPosition);
+				setTitle(navMenuTitles.get(groupPosition));
+				mDrawerLayout.closeDrawer(expandableListView);
+				
 			}
 		});
 
@@ -232,15 +249,6 @@ public class FristActivity extends Activity {
 		// navMenuTitles = reverseOf(navMenuTitles);
 	}
 
-	private String[] reverseOf(String[] stringArray) {
-		int size = stringArray.length;
-		int final_index = size - 1;
-		String[] reversedStrings = new String[size];
-		for (int i = 0; i < size; i++)
-			reversedStrings[i] = stringArray[final_index - i];
-		return reversedStrings;
-	}
-
 	private void addResourceCategoryToExpandableList() {
 
 		childNavMenuTitles = getResources().getStringArray(
@@ -292,19 +300,6 @@ public class FristActivity extends Activity {
 
 	}
 
-	/**
-	 * Slide menu item click listener
-	 * */
-	private class SlideMenuClickListener implements
-			ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			// display view for selected nav drawer item
-			displayView(position);
-		}
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -337,49 +332,6 @@ public class FristActivity extends Activity {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
-	/**
-	 * Diplaying fragment view for selected nav drawer list item
-	 * */
-	private void displayView(int position) {
-		// update the main content by replacing fragments
-		Fragment fragment = null;
-		switch (position) {
-		case 0:
-			fragment = new SourcesFragment();
-			break;
-		case 1:
-			fragment = new SourcesFragment();
-			break;
-		case 2:
-			fragment = new SourcesFragment();
-			break;
-		case 3:
-			fragment = new SourcesFragment();
-			break;
-		case 4:
-			fragment = new SourcesFragment();
-			break;
-		case 5:
-			fragment = new SourcesFragment();
-			break;
-
-		default:
-			fragment = new SourcesFragment();
-			break;
-		}
-
-		FragmentManager fragmentManager = getFragmentManager();
-		showContentOrLoadingIndicator(true);
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame_container, fragment).commit();
-
-		// update selected item and title, then close the drawer
-		expandableListView.setItemChecked(position, true);
-		expandableListView.setSelection(position);
-		setTitle(navMenuTitles.get(position));
-		mDrawerLayout.closeDrawer(expandableListView);
-	}
-
 	private void displayArticlesOfCategory(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
@@ -388,14 +340,12 @@ public class FristActivity extends Activity {
 		bundleArg.putInt("category_id", position);
 		fragment.setArguments(bundleArg);
 		FragmentManager fragmentManager = getFragmentManager();
-		showContentOrLoadingIndicator(false);
 		fragmentManager.beginTransaction()
 				.replace(R.id.frame_container, fragment).commit();
 
-		showContentOrLoadingIndicator(true);
 		// update selected item and title, then close the drawer
-		expandableListView.setItemChecked(position, true);
-		expandableListView.setSelection(position);
+		//expandableListView.setItemChecked(position, true);
+		//expandableListView.setSelection(position);
 		setTitle(navMenuTitles.get(position));
 		mDrawerLayout.closeDrawer(expandableListView);
 	}
@@ -427,11 +377,10 @@ public class FristActivity extends Activity {
 
 	@Override
 	public void onResume() {
-		showContentOrLoadingIndicator(true);
 		super.onResume();
 	}
 
-	private void showContentOrLoadingIndicator(boolean contentLoaded) {
+	/*private void showContentOrLoadingIndicator(boolean contentLoaded) {
 		// Decide which view to hide and which to show.
 		final View showView = contentLoaded ? mContentView : mLoadingView;
 		final View hideView = contentLoaded ? mLoadingView : mContentView;
@@ -463,7 +412,7 @@ public class FristActivity extends Activity {
 						hideView.setVisibility(View.GONE);
 					}
 				});
-	}
+	}*/
 
 	public class Sync extends AsyncTask<DbHandler, Void, Void> {
 

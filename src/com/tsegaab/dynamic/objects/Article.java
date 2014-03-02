@@ -230,9 +230,9 @@ public class Article {
 	}
 	public String getStyled_FullContentWithTitleAndImage() {
 		String awapped = Consts.db.getStyle() + "\n<body>\n"
-				+ "<h3 style\"font-size: 30px;\n\">"
+				+ "<div style=\"margin-top:40px;\n\"> <h3 style=\"\n\">"
 				+ this.getTitle()
-				+ "</h3>"
+				+ "</div></h3>"
 				+ "\n<img src=\""
 				+ "data:image/jpeg;base64," + Base64.encodeToString(this.getByteArrayFromImage(this.getImage_local_path()), Base64.DEFAULT)  
 				+ "\">"
@@ -286,10 +286,6 @@ public class Article {
         
             for (int readNum; (readNum = fis.read(buf)) != -1;) {
                 bos.write(buf, 0, readNum); 
-                //no doubt here is 0
-                /*Writes len bytes from the specified byte array starting at offset 
-                off to this byte array output stream.*/
-                System.out.println("read " + readNum + " bytes,");
             }
         } catch (FileNotFoundException ex) {
             Log.d("error","error");

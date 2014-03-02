@@ -1,9 +1,11 @@
 package com.tsegaab.dynamic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ShareActionProvider;
 import android.widget.Toast;
@@ -40,16 +43,19 @@ public class SingleArticleActivity extends FragmentActivity {
 	private int font_size;
 	private String bg_color;
 	private ActionBar actionBar;
-	private Bundle bundle;
-
 	private boolean actionBarShowed;
+	private HashMap<String, Article> indexedArticle;
+	public int temp_article_index;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screen_slide);
-		bundle = new Bundle();
+
+		indexedArticle = new HashMap<String, Article>();
 		db = Consts.db;
 		Intent i = getIntent();
 		article_index = i.getIntExtra("article_index", 0);
@@ -61,9 +67,12 @@ public class SingleArticleActivity extends FragmentActivity {
 		actionBar.setHomeButtonEnabled(true);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBarShowed = true;
-		
+
 		articles_to_display = Consts.current_articles;
 		NUM_PAGES = articles_to_display.size();
+		
+		for(int indexo = 0; indexo < NUM_PAGES; indexo++)
+			indexedArticle.put(""+indexo, articles_to_display.get(indexo));
 
 		// Instantiate a ViewPager and a PagerAdapter.
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -71,12 +80,13 @@ public class SingleArticleActivity extends FragmentActivity {
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setCurrentItem(article_index);
 		mPager.setClickable(true);
+
 		mPager.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				switchActionsBarShow();
-				
+
 			}
 		});
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -90,7 +100,8 @@ public class SingleArticleActivity extends FragmentActivity {
 				// exposing actions),
 				// but for simplicity, the activity provides the actions in this
 				// sample.
-				//position = article_index;
+				// position = article_index;
+				Log.d(Consts.Z_TAG, "PPPOOOSSS = " + position);
 				invalidateOptionsMenu();
 			}
 		});
@@ -103,7 +114,7 @@ public class SingleArticleActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			article_index = position;
+			temp_article_index = position;
 			return ScreenSlidePageFragment
 					.create(articles_to_display, position);
 
@@ -132,6 +143,7 @@ public class SingleArticleActivity extends FragmentActivity {
 		case R.id.sigle_article_action_share:
 			// sdoShare();
 			Toast.makeText(this, "Share selected", Toast.LENGTH_SHORT).show();
+			doShare();
 			return true;
 			// action with ID action_settings was selected
 		case R.id.sigle_article_action_font_plus:
@@ -203,32 +215,65 @@ public class SingleArticleActivity extends FragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle icicle) {
 		super.onSaveInstanceState(icicle);
-		icicle.putLong("param", article_index);
+		icicle.putInt("article_index", temp_article_index);
 	}
 
 	protected void refreshPage() {
-		int a = article_index  - 1;
-		mPager.setCurrentItem(NUM_PAGES - a);
-		mPager.setCurrentItem(a, true);
-		//mPager.setCurrentItem(NUM_PAGES - (article_index - 1));
+		// int a = temp_article_index - 1;
+		// mPager.setCurrentItem(NUM_PAGES - a);
+		// mPager.setCurrentItem(a);
+		// mPager.setCurrentItem(NUM_PAGES - (article_index - 1));
+		// Bundle bundle = new Bundle();
+		// onSaveInstanceState(bundle);
+		// onDestroy();
+		// finish();
+		// onCreate(bundle);
+
+		// mPager.refreshDrawableState();
+		Intent invisible_activity = new Intent(getApplicationContext(),
+				InvisibleActivity.class);
+		invisible_activity.putExtra("article_index", temp_article_index);
+		startActivity(invisible_activity);
+		finish();
+
 	}
-	
+
 	private void switchActionsBarShow() {
 		Log.d(Consts.Z_TAG, "switchActionsBarShow 111 from " + actionBarShowed);
 		if (actionBarShowed) {
-		actionBar.hide();
-		actionBarShowed = false;
+			actionBar.hide();
+			actionBarShowed = false;
 		} else {
 			actionBar.show();
 			actionBarShowed = true;
 		}
-		
+
 	}
+
 	public void doShare() {
 		// populate the share intent with data
-		Intent intent = new Intent(Intent.ACTION_SEND);
+		/*Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
 		intent.putExtra(Intent.EXTRA_TEXT, "This is a message for you");
-		provider.setShareIntent(intent);
+		provider.setShareIntent(intent);*/
+		Article art = indexedArticle.get(""+temp_article_index);
+		String title = art.getTitle() + "\n" + art.getLink();
+		String catid = "40";
+		String id = "12546";
+
+/*		Uri.Builder b = Uri.parse("http://www.ethiopianreporter.com/" ).buildUpon();
+		   b.path("index.php");
+		   b.appendQueryParameter("option=com_content&catid", catid);
+		b.appendQueryParameter("id", id); // instead of ("*&*id", id);
+		b.appendQueryParameter("view=article", null); // instead of ("*&*view=article", null);
+		   b.build();
+
+		String url = b.build().toString();*/
+
+		String tweetUrl = "https://twitter.com/intent/tweet?text=" + title; //+ "&url=" + url;
+
+		Uri uri = Uri.parse(tweetUrl);
+		startActivity(new Intent(Intent.ACTION_VIEW, uri));
+
 	}
 }
