@@ -51,7 +51,7 @@ public class FristActivity extends Activity {
 	// private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private Sync dataSyncer;
-	
+
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -161,26 +161,6 @@ public class FristActivity extends Activity {
 				// Switch to frame
 				return true;
 			}
-
-			private void displayArticlesOfCategoryAndSourceId(
-					int groupPosition, int childPosition) {
-				Fragment fragment = null;
-				fragment = new Articles2Source();
-				Bundle bundleArg = new Bundle();
-				bundleArg.putInt("category_id", groupPosition);
-				bundleArg.putInt("source_id", childPosition);
-				fragment.setArguments(bundleArg);
-				FragmentManager fragmentManager = getFragmentManager();
-				fragmentManager.beginTransaction()
-						.replace(R.id.frame_container, fragment).commit();
-
-				// update selected item and title, then close the drawer
-				expandableListView.setItemChecked(groupPosition, true);
-				expandableListView.setSelection(groupPosition);
-				setTitle(navMenuTitles.get(groupPosition));
-				mDrawerLayout.closeDrawer(expandableListView);
-				
-			}
 		});
 
 		/*
@@ -219,6 +199,11 @@ public class FristActivity extends Activity {
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
 			displayArticlesOfCategory(0);
+		} else {
+			if(savedInstanceState.getInt("child_index") < 0)
+			displayArticlesOfCategory(savedInstanceState.getInt("patent_index"));
+			else
+				displayArticlesOfCategoryAndSourceId(savedInstanceState.getInt("parent_index"), savedInstanceState.getInt("child_index"));
 		}
 	}
 
@@ -332,6 +317,26 @@ public class FristActivity extends Activity {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	private void displayArticlesOfCategoryAndSourceId(int groupPosition,
+			int childPosition) {
+		Fragment fragment = null;
+		fragment = new Articles2Source();
+		Bundle bundleArg = new Bundle();
+		bundleArg.putInt("category_id", groupPosition);
+		bundleArg.putInt("source_id", childPosition);
+		fragment.setArguments(bundleArg);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame_container, fragment).commit();
+
+		// update selected item and title, then close the drawer
+		expandableListView.setItemChecked(groupPosition, true);
+		expandableListView.setSelection(groupPosition);
+		setTitle(navMenuTitles.get(groupPosition));
+		mDrawerLayout.closeDrawer(expandableListView);
+
+	}
+
 	private void displayArticlesOfCategory(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
@@ -344,8 +349,8 @@ public class FristActivity extends Activity {
 				.replace(R.id.frame_container, fragment).commit();
 
 		// update selected item and title, then close the drawer
-		//expandableListView.setItemChecked(position, true);
-		//expandableListView.setSelection(position);
+		// expandableListView.setItemChecked(position, true);
+		// expandableListView.setSelection(position);
 		setTitle(navMenuTitles.get(position));
 		mDrawerLayout.closeDrawer(expandableListView);
 	}
@@ -380,39 +385,33 @@ public class FristActivity extends Activity {
 		super.onResume();
 	}
 
-	/*private void showContentOrLoadingIndicator(boolean contentLoaded) {
-		// Decide which view to hide and which to show.
-		final View showView = contentLoaded ? mContentView : mLoadingView;
-		final View hideView = contentLoaded ? mLoadingView : mContentView;
-
-		// Set the "show" view to 0% opacity but visible, so that it is visible
-		// (but fully transparent) during the animation.
-		showView.setAlpha(0f);
-		showView.setVisibility(View.VISIBLE);
-
-		// Animate the "show" view to 100% opacity, and clear any animation
-		// listener set on
-		// the view. Remember that listeners are not limited to the specific
-		// animation
-		// describes in the chained method calls. Listeners are set on the
-		// ViewPropertyAnimator object for the view, which persists across
-		// several
-		// animations.
-		showView.animate().alpha(1f).setDuration(mShortAnimationDuration)
-				.setListener(null);
-
-		// Animate the "hide" view to 0% opacity. After the animation ends, set
-		// its visibility
-		// to GONE as an optimization step (it won't participate in layout
-		// passes, etc.)
-		hideView.animate().alpha(0f).setDuration(mShortAnimationDuration)
-				.setListener(new AnimatorListenerAdapter() {
-					@Override
-					public void onAnimationEnd(Animator animation) {
-						hideView.setVisibility(View.GONE);
-					}
-				});
-	}*/
+	/*
+	 * private void showContentOrLoadingIndicator(boolean contentLoaded) { //
+	 * Decide which view to hide and which to show. final View showView =
+	 * contentLoaded ? mContentView : mLoadingView; final View hideView =
+	 * contentLoaded ? mLoadingView : mContentView;
+	 * 
+	 * // Set the "show" view to 0% opacity but visible, so that it is visible
+	 * // (but fully transparent) during the animation. showView.setAlpha(0f);
+	 * showView.setVisibility(View.VISIBLE);
+	 * 
+	 * // Animate the "show" view to 100% opacity, and clear any animation //
+	 * listener set on // the view. Remember that listeners are not limited to
+	 * the specific // animation // describes in the chained method calls.
+	 * Listeners are set on the // ViewPropertyAnimator object for the view,
+	 * which persists across // several // animations.
+	 * showView.animate().alpha(1f).setDuration(mShortAnimationDuration)
+	 * .setListener(null);
+	 * 
+	 * // Animate the "hide" view to 0% opacity. After the animation ends, set
+	 * // its visibility // to GONE as an optimization step (it won't
+	 * participate in layout // passes, etc.)
+	 * hideView.animate().alpha(0f).setDuration(mShortAnimationDuration)
+	 * .setListener(new AnimatorListenerAdapter() {
+	 * 
+	 * @Override public void onAnimationEnd(Animator animation) {
+	 * hideView.setVisibility(View.GONE); } }); }
+	 */
 
 	public class Sync extends AsyncTask<DbHandler, Void, Void> {
 

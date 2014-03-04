@@ -48,6 +48,11 @@ public class DbHandler extends SQLiteOpenHelper {
 					"black",
 					"100");
 	private static String dbName = "dynamic";
+	
+	private String inserCategory1 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('1', 'ዜና', '/dynamic/images/news.png');";
+	private String inserCategory2 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('2', 'ቴክኖሎጂ', '/dynamic/images/tech.png');";
+	private String inserCategory3 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('4', 'ስፖርት', /dynamic/images/sports.png');";
+	
 
 	public DbHandler(Context con) {
 		super(con, dbName, null, 1);
@@ -63,6 +68,9 @@ public class DbHandler extends SQLiteOpenHelper {
 		db.execSQL(createArticlesTableQuery);
 		db.execSQL(createStylesTableQuery);
 		db.execSQL(insertStylesQuery);
+		db.execSQL(inserCategory1);
+		db.execSQL(inserCategory2);
+		db.execSQL(inserCategory3);
 		Log.d(Consts.Z_TAG, "onCreate methode of DBController"
 				+ createSourceTableQuery + ", " + createArticlesTableQuery + createStylesTableQuery + " **AND** " + createCategoriesTableQuery);
 		
