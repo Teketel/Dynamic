@@ -7,6 +7,13 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+        
+        <ProgressBar 
+            android:id="@+id/frist_activity_prigress"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
     </FrameLayout>
 
     <!-- Listview to display slider menu -->

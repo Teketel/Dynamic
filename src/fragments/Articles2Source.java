@@ -46,7 +46,6 @@ public class Articles2Source extends Fragment {
 			Bundle savedInstanceState) {
 		
 		articles_counter = 0;
-		setHasOptionsMenu(true);
 		int ci = getArguments().getInt(ARG_CATEG_ID);
 		int si = getArguments().getInt(ARG_SOURCE_ID);
 		c_id = ci + 1;
@@ -121,28 +120,6 @@ public class Articles2Source extends Fragment {
 		Consts.current_articles = articles;
 		return articles2category;
 
-	}
-
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.articles_activity_actions, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.articles_action_search:
-			Toast.makeText(getActivity().getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-			// openSearch();
-			return true;
-		case R.id.articles_action_refresh:
-			Toast.makeText(getActivity().getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
-			// refreshView();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 
 }

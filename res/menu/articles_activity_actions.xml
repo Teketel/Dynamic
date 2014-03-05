@@ -4,7 +4,7 @@
         <item
         android:id="@+id/articles_action_search"
         android:icon="@drawable/sea"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/action_search"/>
         
         <item

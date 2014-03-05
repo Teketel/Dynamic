@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.widget.Toast;
+
+import com.tsegaab.dynamic.Consts;
 import com.tsegaab.dynamic.objects.Article;
 import com.tsegaab.dynamic.objects.Category;
 import com.tsegaab.dynamic.objects.Source;
@@ -45,7 +48,7 @@ public class ServerHandler {
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Toast.makeText(Consts.context,"No Internet Coneectio", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 			return null;
 		}
@@ -60,7 +63,7 @@ public class ServerHandler {
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Toast.makeText(Consts.context,"No Internet Coneectio", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 			return null;
 		}
@@ -75,7 +78,7 @@ public class ServerHandler {
 			e.printStackTrace();
 			return null;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			Toast.makeText(Consts.context,"No Internet Coneectio", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 			return null;
 		}

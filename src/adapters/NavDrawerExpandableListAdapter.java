@@ -1,15 +1,19 @@
 package adapters;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.tsegaab.dynamic.Consts;
 import com.tsegaab.dynamic.R;
 
 import models.NavDrawerItem;
 import models.NavDrawerListItem;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -123,12 +127,24 @@ public class NavDrawerExpandableListAdapter extends BaseExpandableListAdapter {
 		NavDrawerItem parentNavListItem = (NavDrawerItem) this
 				.getGroup(groupPostion);
 		if (parentNavListItem.getIconPath() != null) {
+			if (parentNavListItem.getIconPath().contains("local/")) {
+				AssetManager assetManager = Consts.context.getAssets();
+		        InputStream istr = null;
+		        try {
+		            istr = assetManager.open(parentNavListItem.getIconPath());
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		        Bitmap bitmap = BitmapFactory.decodeStream(istr);
+		        imgIcon.setImageBitmap(bitmap);
+				
+			} else {
 			File imgFile = new File(parentNavListItem.getIconPath());
 			if (imgFile.exists()) {
 				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile
 						.getAbsolutePath());
 				imgIcon.setImageBitmap(myBitmap);
-			}
+			}}
 		} else {
 		imgIcon.setImageResource(parentNavListItem.getIcon());
 		}

@@ -37,8 +37,7 @@ public class Syncer extends Service {
 		Toast.makeText(this, " Service Started", Toast.LENGTH_LONG).show();
 		Runnable r = new Runnable() {
 			public void run() {
-				db.articleListToDb(serverHandler.getArticlesIdGtz(db
-						.getLatestArticleId()));
+				//db.articleListToDb(serverHandler.getArticlesIdGtz(db						.getLatestArticleId()));
 				stopSelf();
 			}
 		};

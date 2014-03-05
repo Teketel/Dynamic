@@ -34,6 +34,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -74,12 +75,18 @@ public class FristActivity extends Activity {
 	protected boolean throughCode;
 	private DbHandler db;
 	private ArrayList<Category> categoriesFromDb;
+	private int sent_parent_index;
+	private int sent_child_index;
+	private int p_i;
+	private int c_i;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frist);
-
+		
+		
 		Consts.context = getApplicationContext();
 		mTitle = mDrawerTitle = getTitle();
 
@@ -96,14 +103,11 @@ public class FristActivity extends Activity {
 		mShortAnimationDuration = getResources().getInteger(
 				android.R.integer.config_shortAnimTime);
 
-		startService(new Intent(this, Syncer.class));
+		//startService(new Intent(this, Syncer.class));
 
 		dataSyncer = new Sync();
-		dataSyncer.execute(new DbHandler(getApplicationContext()));
-		while (true) {
-			if (Consts.categsAndSourcesSynced)
-				break;
-		}
+		//dataSyncer.execute(new DbHandler(getApplicationContext()));
+		
 		categoriesFromDb = db.getAllCategories();
 
 		if ((categoriesFromDb != null) && (categoriesFromDb.size() > 0)) {
@@ -158,7 +162,8 @@ public class FristActivity extends Activity {
 				displayArticlesOfCategoryAndSourceId(groupPosition, childPosition);
 				Toast.makeText(getApplicationContext(), "" + childIndex,
 						Toast.LENGTH_SHORT).show();
-				// Switch to frame
+				c_i = childPosition;
+				p_i = groupPosition;
 				return true;
 			}
 		});
@@ -181,7 +186,8 @@ public class FristActivity extends Activity {
 									// accessibility
 				R.string.app_name // nav drawer close - description for
 									// accessibility
-		) {
+		) 
+		{
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
@@ -197,8 +203,8 @@ public class FristActivity extends Activity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		if (savedInstanceState == null) {
-			// on first time display view for first nav item
 			displayArticlesOfCategory(0);
+			
 		} else {
 			if(savedInstanceState.getInt("child_index") < 0)
 			displayArticlesOfCategory(savedInstanceState.getInt("patent_index"));
@@ -206,7 +212,16 @@ public class FristActivity extends Activity {
 				displayArticlesOfCategoryAndSourceId(savedInstanceState.getInt("parent_index"), savedInstanceState.getInt("child_index"));
 		}
 	}
-
+	
+	private void refresh() {
+		Intent i = new Intent(getApplicationContext(), InvisibleActivity.class);
+		i.putExtra("caller_activity", 2);
+		i.putExtra("parent_index", p_i);
+		i.putExtra("child_index", c_i);
+		startActivity(i);
+		finish();
+		
+	}
 	private void addDbCategoryToExpandableList(ArrayList<Category> categories) {
 		Category c;
 		Source s;
@@ -284,22 +299,29 @@ public class FristActivity extends Activity {
 		navMenuIcons.recycle();
 
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.articles_activity_actions, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// toggle nav drawer on selecting action bar app icon/title
+		
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle action bar actions click
+		
 		switch (item.getItemId()) {
-		case R.id.action_settings:
+		case R.id.articles_action_search:
+			Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+			// openSearch();
+			return true;
+		case R.id.articles_action_refresh:
+			Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
+			refresh();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -313,7 +335,8 @@ public class FristActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(expandableListView);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.articles_action_refresh).setVisible(!drawerOpen);
+		menu.findItem(R.id.articles_action_search).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 

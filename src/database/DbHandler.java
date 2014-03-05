@@ -49,9 +49,10 @@ public class DbHandler extends SQLiteOpenHelper {
 					"100");
 	private static String dbName = "dynamic";
 	
-	private String inserCategory1 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('1', 'ዜና', '/dynamic/images/news.png');";
-	private String inserCategory2 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('2', 'ቴክኖሎጂ', '/dynamic/images/tech.png');";
-	private String inserCategory3 = "INSERT INTO " + categoriesTbName + " (id, name, image_local_path) VALUES)('4', 'ስፖርት', /dynamic/images/sports.png');";
+	private String inserCategory1 = "INSERT INTO " + categoriesTbName + "(id, name, image_local_path) VALUES('1', 'ዜና', 'local/dynamic/images/news.png');";
+	private String inserCategory2 = "INSERT INTO " + categoriesTbName + "(id, name, image_local_path) VALUES('2', 'ቴክኖሎጂ', 'local/dynamic/images/tech.png');";
+	private String inserCategory3 = "INSERT INTO " + categoriesTbName + "(id, name, image_local_path) VALUES('3', 'ማህበራዊ', 'local/dynamic/images/soc.png');";
+	private String inserCategory4 = "INSERT INTO " + categoriesTbName + "(id, name, image_local_path) VALUES('4', 'ስፖርት', 'local/dynamic/images/sports.png');";
 	
 
 	public DbHandler(Context con) {
@@ -71,6 +72,7 @@ public class DbHandler extends SQLiteOpenHelper {
 		db.execSQL(inserCategory1);
 		db.execSQL(inserCategory2);
 		db.execSQL(inserCategory3);
+		db.execSQL(inserCategory4);
 		Log.d(Consts.Z_TAG, "onCreate methode of DBController"
 				+ createSourceTableQuery + ", " + createArticlesTableQuery + createStylesTableQuery + " **AND** " + createCategoriesTableQuery);
 		
